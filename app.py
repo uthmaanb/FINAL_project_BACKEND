@@ -281,7 +281,7 @@ def user_fx():
         return response
 
     # Login function
-    if response['data'] == 'null':
+    if request.method == "PATCH":
         username = request.json["username"]
         password = request.json["password"]
 
