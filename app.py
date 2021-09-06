@@ -378,7 +378,7 @@ def product_fx():
                      "name,"
                      "prod_type,"
                      "description,"
-                     "price) VALUES(?, ?, ?, ?, ?)")
+                     "price) VALUES(?, ?, ?, ?)")
             values = name, prod_type, description, price
             db.insert(query, values)
 
