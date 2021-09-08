@@ -339,7 +339,7 @@ def edit_user(user_id):
         return response
 
     if request.method == "GET":
-        query = "SELECT * FROM  users WHERE user_id=", str(user_id)
+        query = f"SELECT * FROM  users WHERE user_id='{user_id}'"
         db.fetch1(query)
 
         response['status_code'] = 200
