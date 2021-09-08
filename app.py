@@ -303,7 +303,7 @@ def user_fx():
 
 
 # edit users
-@app.route('/edit-user/<int:user_id>', methods=["PUT"])
+@app.route('/edit-user/<int:user_id>', methods=["PUT", "GET"])
 def edit_user(user_id):
     response = {}
     db = Database()
@@ -336,6 +336,14 @@ def edit_user(user_id):
             response["message"] = "Failed to update user"
             response["status_code"] = 209
 
+        return response
+
+    if request.method == "GET":
+        query = "SELECT * FROM  users WHERE user_id=", str(user_id)
+        db.fetch1(query)
+
+        response['status_code'] = 200
+        response['data'] = db.fetch1(query)
         return response
 
 
