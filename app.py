@@ -126,7 +126,7 @@ def upload_file():
     )
     # upload_result = None
     if request.method == 'POST' or request.method == 'PUT':
-        image = request.form['image']
+        image = request.json['image']
         app.logger.info('%s file_to_upload', image)
         if image:
             upload_result = cloudinary.uploader.upload(image)
@@ -399,10 +399,10 @@ def product_fx():
     if request.method == "POST":
         try:
             image = upload_file()
-            name = request.form['name']
-            prod_type = request.form['prod_type']
-            description = request.form['description']
-            price = request.form['price']
+            name = request.json['name']
+            prod_type = request.json['prod_type']
+            description = request.json['description']
+            price = request.json['price']
 
             query = ("INSERT INTO products("
                      "image,"
