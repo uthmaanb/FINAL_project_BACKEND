@@ -447,7 +447,7 @@ def edit_product(prod_id):
             price = request.json['price']
 
             query = ("UPDATE products SET name=?,"
-                     "image,"
+                     "image=?,"
                      "prod_type=?,"
                      "description=?,"
                      "price=?"
