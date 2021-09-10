@@ -1,4 +1,6 @@
 import sqlite3
+
+import cloudinary.uploader
 from flask import Flask, request
 from flask_cors import CORS
 from flask_mail import Mail, Message
@@ -57,6 +59,7 @@ class CreateTable:
 
         # product table
         self.conn.execute("CREATE TABLE IF NOT EXISTS products(prod_id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                          "image,"
                           "name TEXT NOT NULL,"
                           "prod_type TEXT NOT NULL,"
                           "description TEXT NOT NULL,"
@@ -113,7 +116,25 @@ app.config['MAIL_USE_SSL'] = True
 mail = Mail(app)
 
 
-# xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+# using cloudinary to upload images to database
+def upload_file():
+    app.logger.info('in upload route')
+    cloudinary.config(
+        cloud_name="pizzaboii96",
+        api_key="811499535753334",
+        api_secret="6jOJ_zBk9zetHIcM-g8enLSmuMQ"
+    )
+    # upload_result = None
+    if request.method == 'POST' or request.method == 'PUT':
+        image = request.json['image']
+        app.logger.info('%s file_to_upload', image)
+        if image:
+            upload_result = cloudinary.uploader.upload(image)
+            app.logger.info(upload_result)
+            return upload_result['url']
+
+
+# x x   x   x   x   x   x   x   xx  xx  x   xx      xx  xx  xx      xx      xx  xx  xx  xx  xx  x   x   xx  x   xx  xx
 # admin functions
 @app.route('/admin/', methods=["POST", "GET", "PATCH"])
 def admin_fx():
@@ -377,17 +398,19 @@ def product_fx():
     # product Register function
     if request.method == "POST":
         try:
+            image = upload_file()
             name = request.json['name']
             prod_type = request.json['prod_type']
             description = request.json['description']
             price = request.json['price']
 
             query = ("INSERT INTO products("
+                     "image,"
                      "name,"
                      "prod_type,"
                      "description,"
-                     "price) VALUES(?, ?, ?, ?)")
-            values = name, prod_type, description, price
+                     "price) VALUES(?, ?, ?, ?, ?)")
+            values = image, name, prod_type, description, price
             db.insert(query, values)
 
             response["message"] = "successfully added new product to database"
@@ -417,17 +440,19 @@ def edit_product(prod_id):
 
     if request.method == "PUT":
         try:
+            image = request.json['image']
             name = request.json['name']
             prod_type = request.json['prod_type']
             description = request.json['description']
             price = request.json['price']
 
             query = ("UPDATE products SET name=?,"
+                     "image,"
                      "prod_type=?,"
                      "description=?,"
                      "price=?"
                      "WHERE prod_id=?")
-            values = name, prod_type, description, price, prod_id
+            values = image, name, prod_type, description, price, prod_id
             db.insert(query, values)
 
             response["message"] = "Product was successfully updated"
