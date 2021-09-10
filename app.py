@@ -59,7 +59,7 @@ class CreateTable:
 
         # product table
         self.conn.execute("CREATE TABLE IF NOT EXISTS products(prod_id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                          "image,"
+                          "image TEXT NOT NULL,"
                           "name TEXT NOT NULL,"
                           "prod_type TEXT NOT NULL,"
                           "description TEXT NOT NULL,"
