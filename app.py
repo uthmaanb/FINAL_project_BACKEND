@@ -116,7 +116,7 @@ app.config['MAIL_USE_SSL'] = True
 mail = Mail(app)
 
 
-# using cloudinary to upload images to database
+# using cloudinary to convert and upload images to database
 def upload_file():
     app.logger.info('in upload route')
     cloudinary.config(
