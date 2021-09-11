@@ -289,7 +289,7 @@ def user_fx():
                 values = username, first_name, last_name, cell, email, password, address
                 db.insert(query, values)
 
-                msg = Message('We welcome you to Cafe Breda', sender='cody01101101@gmail.com', recipients=[email])
+                msg = Message('We welcome you to Weeb Apparel', sender='cody01101101@gmail.com', recipients=[email])
                 msg.body = "Thank You " + first_name + ", we appreciate your support!"
                 mail.send(msg)
                 response["message"] = "successfully added new user to database"
